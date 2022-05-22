@@ -102,6 +102,4 @@ function renderTimeBlockContent() {
 
         hourEl.children().eq(1).val(content);
     }
-
-    
 }
