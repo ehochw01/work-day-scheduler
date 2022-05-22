@@ -44,9 +44,12 @@ function renderTimeBlockColors() {
     // return current hour in military time
     var currentHour = moment().hour();
 
+    // loop through the hour log rows
     for(var i = 0; i < hourLog.children().length; i++) {
         var hourEl = hourLog.children().eq(i);
+        // get the ID of each row, which is a number equivalent to the time that row represents
         var hourElId = hourEl.attr('id');
+        // change the row's hour to military time, so that it can be compared to the current time
         if (hourElId >= 1 && hourElId <= 5) {
             var hour = parseInt(hourElId) + 12;
         } else {
@@ -78,20 +81,27 @@ function createSaveButtonEventListener(hourEl, hourElId) {
     var buttonEl = $(buttonId)
 
     buttonEl.on('click', function(event){
-        // validate user input
-        if (hourEl.children().eq(1).val() == "") {
-            alert("You are trying to save an empty field");
-            return;
-        } else {
-            // save the input to local instorage
-            var text = hourEl.children().eq(1).val();
-            scheduleArray[parseInt(hourElId)-1] = text;
-            console.log(scheduleArray);
-            localStorage.setItem("schedule", JSON.stringify(scheduleArray));
-        }
+        // save the input to local instorage
+        var text = hourEl.children().eq(1).val();
+        scheduleArray[parseInt(hourElId)-1] = text;
+        console.log(scheduleArray);
+        localStorage.setItem("schedule", JSON.stringify(scheduleArray));
+        
     });
 }
 
 function renderTimeBlockContent() {
+    var hourLog = $('#hour-log');
+     // loop through the hour log rows
+    for(var i = 0; i < hourLog.children().length; i++) {
+        var hourEl = hourLog.children().eq(i);
+        console.log();
+        // get the ID of each row, which is a number equivalent to the time that row represents
+        var hourElId = hourEl.attr('id');
+        var content = scheduleArray[parseInt(hourElId)-1];
 
+        hourEl.children().eq(1).val(content);
+    }
+
+    
 }
