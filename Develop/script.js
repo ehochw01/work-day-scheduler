@@ -14,15 +14,19 @@ WHEN I refresh the page
 THEN the saved events persist
 */
 
-// var scheduleArray = ["stuff1", "stuff2", "stuff3", "stuff4", "stuff5", "stuff6", "stuff7", "stuff8", "stuff9", "stuff9", "stuff10", "stuff11", "stuff12"];
-// localStorage.setItem("schedule", JSON.stringify(scheduleArray));
-
+// get the saved scheduled from local storage
 var scheduleArray = JSON.parse(localStorage.getItem("schedule"));
+
+// if there is no schedule in localStorage, create an empty schedule array
+if(scheduleArray == null) {
+    var scheduleArray = ["", "", "", "", "", "", "", "", "", "", "", ""];
+}
 
 console.log(scheduleArray);
 
 displayTodaysDate();
 renderTimeBlockColors();
+renderTimeBlockContent();
 
 // get current time and display it on the page
 function displayTodaysDate() {
@@ -69,22 +73,25 @@ function renderTimeBlockColors() {
 }
 
 function createSaveButtonEventListener(hourEl, hourElId) {
-    // console.log("createSaveButtonEventListener")
     // get the button element for which we will add a listener
     var buttonId = "#" + hourElId + "-save"
     var buttonEl = $(buttonId)
 
-    // console.log(buttonEl);
-
     buttonEl.on('click', function(event){
-        // save 
+        // validate user input
         if (hourEl.children().eq(1).val() == "") {
             alert("You are trying to save an empty field");
             return;
         } else {
+            // save the input to local instorage
             var text = hourEl.children().eq(1).val();
-            scheduleArray[parseInt(hourElId)] = text;
+            scheduleArray[parseInt(hourElId)-1] = text;
             console.log(scheduleArray);
+            localStorage.setItem("schedule", JSON.stringify(scheduleArray));
         }
     });
+}
+
+function renderTimeBlockContent() {
+
 }
